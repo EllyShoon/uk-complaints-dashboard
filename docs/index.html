@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>UK Financial Services Complaints, H2 2025</title>
+<style>
+:root{--bg:#fff;--fg:#1a1f2b;--mut:#5b6472;--card:#f4f6fa;--bd:#dde2ea;--acc:#1f3864;--hi:#c0504d;--lo:#4f81bd;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12161d;--fg:#e6e9ef;--mut:#9aa4b2;--card:#1b212b;--bd:#2c3441;--acc:#7fa3e0;--hi:#e0726f;--lo:#6fa0e0}}
+:root[data-theme="dark"]{--bg:#12161d;--fg:#e6e9ef;--mut:#9aa4b2;--card:#1b212b;--bd:#2c3441;--acc:#7fa3e0;--hi:#e0726f;--lo:#6fa0e0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+main{max-width:960px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:1.5rem;margin:0 0 4px}
+h2{font-size:1.05rem;margin:30px 0 2px}
+.cap{color:var(--mut);font-size:.85rem;margin:0 0 12px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:16px}
+.k{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:12px}
+.k b{display:block;font-size:1.4rem}
+.k span{color:var(--mut);font-size:.8rem}
+.r{display:grid;grid-template-columns:minmax(90px,36%) 1fr;gap:8px;align-items:center;margin:6px 0;font-size:.85rem}
+.r.o{grid-template-columns:minmax(90px,32%) 1fr 108px}
+.n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v{display:flex;align-items:center;gap:8px;min-width:0}
+.t{flex:1;min-width:0}
+.v i{font-style:normal;color:var(--mut);font-size:.78rem;white-space:nowrap}
+.bar{height:16px;border-radius:3px;background:var(--acc)}
+.dv{position:relative;height:16px}
+.dv::before{content:"";position:absolute;left:50%;top:-2px;bottom:-2px;width:1px;background:var(--mut)}
+.bx{position:absolute;top:0;height:100%;border-radius:2px}
+.ctl{display:flex;gap:10px;align-items:center;margin:8px 0;font-size:.85rem}
+.ctl input{flex:1;max-width:320px}
+footer{margin-top:32px;color:var(--mut);font-size:.8rem}
+a{color:var(--acc)}
+</style>
+</head>
+<body>
+<main>
+<h1>UK Financial Services Complaints</h1>
+<p class="cap">FCA firm-specific complaints data &middot; H2 2025 release</p>
+<div class="kpis" id="kp"></div>
+
+<h2>Volume and uphold rate by product group</h2>
+<p class="cap">Uphold rate is weighted by each firm's closed complaints, not a simple average across firms.</p>
+<div id="prod"></div>
+
+<h2>Largest firms by complaints opened</h2>
+<p class="cap">Label shows complaints opened and the firm's own uphold rate.</p>
+<div id="firms"></div>
+
+<h2>Uphold-rate outliers</h2>
+<p class="cap">How far each firm's uphold rate sits from the sector median. Right of the line means upheld more often than the median; the label shows the gap and the firm's own rate. A volume floor removes small firms, because a rate built on a handful of cases is mostly noise.</p>
+<div class="ctl"><label for="sl">Minimum complaints opened</label><input id="sl" type="range" min="100" max="20000" step="100" value="500"><b id="fv"></b></div>
+<p class="cap" id="cnt"></p>
+<div id="out"></div>
+
+<footer>
+Snapshot of the H2 2025 firm-specific release (published 15 May 2026); it does not update. Each firm reports its own six-month window within the half-year. Uphold rate is not a clean measure of quality: a firm with a generous goodwill policy upholds more while treating customers better.<br>
+Source: <a href="https://www.fca.org.uk/data/complaints-data/firm-level">FCA complaints data</a>. Contains public sector information licensed under the Open Government Licence v3.0.
+</footer>
+</main>
+<script>
+const D={"m":{"o":1652438,"f":219,"w":56.15026669677908,"md":51.09},"p":[["Banking and credit cards",844807,54.38],["Insurance & pure protection",620885,56.88],["Decumulation & pensions",80272,69.3],["Home finance",66543,56.55],["Investments",39931,54.18]],"f":[["NATIONAL WESTMINSTER BANK PUBLIC LIMITED COMPANY",97511,57.21],["Lloyds Bank PLC",90837,68.43],["Barclays Bank UK PLC",85996,60.71],["HSBC UK Bank Plc",81503,58.49],["Bank of Scotland plc",79508,68.06],["Nationwide Building Society",69388,52.38],["Santander UK Plc",64741,46.31],["EUI Limited",60221,63.86],["Domestic & General Insurance Plc",56025,52.22],["Aviva Insurance Limited",49795,56.27],["Monzo Bank Ltd",49570,30.02],["British Gas Services Limited",49016,93.07],["U K Insurance Limited",37282,67.44],["Clydesdale Bank Plc",34185,64.1],["TSB Bank plc",33705,52.38],["Capital One (Europe) plc",30593,34.27],["BUPA Insurance Services Limited",28091,57.13],["Aviva Life Services UK Limited",26131,66.92],["The Royal Bank of Scotland Plc",19884,58.52],["Hastings Insurance Services Limited",19781,52.04],["AXA PPP Healthcare Limited",19555,54.6],["Vanquis Bank Limited",18304,29.94],["Starling Bank Limited",17323,40.99],["Phoenix Life Limited",17086,77.62],["AXA Insurance UK Plc",16052,58.71],["AMERICAN EXPRESS SERVICES EUROPE LIMITED",14814,33.13],["Liverpool Victoria Insurance Company Limited",12025,55.86],["BISL Limited",11577,45.72],["esure Insurance Limited",11352,70.24],["Metro Bank PLC",11244,51.13],["CREATION CONSUMER FINANCE LIMITED",10537,41.12],["Barclays Bank Plc",10416,60.93],["Vitality Corporate Services Limited",10197,50.77],["The Prudential Assurance Company Limited",9892,85.82],["THE CO-OPERATIVE BANK P.L.C.",9622,64.73],["RAC FINANCIAL SERVICES LIMITED",9491,26.43],["First Central Insurance Management Limited",8797,42.36],["MBNA Limited",8796,53.93],["Atlanta Insurance Intermediaries Limited",8517,43.65],["Royal London Mutual Insurance Society, Limited (THE)",8414,63.06],["J.P. Morgan Europe Limited",8343,47.54],["Inter Partner Assistance SA",8125,74.1],["SCOTTISH WIDOWS LIMITED",7762,83.36],["Saga Services Limited",7519,52.43],["Hargreaves Lansdown Asset Management Limited",7021,47.35],["Assurant General Insurance Limited",6731,46.07],["Automobile Association Insurance Services Limited",6657,41.72],["Zopa Bank Limited",6391,41.87],["INTACT INSURANCE UK LIMITED",5765,56.46],["Lloyds Bank General Insurance Limited",5683,78.24],["Society of Lloyd's",5669,39.78],["Scottish Equitable Plc",5420,66.41],["MARKS AND SPENCER FINANCIAL SERVICES PLC",5264,68.39],["The National Farmers' Union Mutual Insurance Society Limited",5076,62.36],["MUNICH RE DIGITAL PARTNERS LIMITED",5012,10.82],["Tesco Personal Finance Limited",4861,37.52],["Skipton Building Society",4641,72.8],["ERGO TRAVEL INSURANCE SERVICES LTD",4524,62.39],["ReAssure Limited",4463,79.64],["Chubb European Group SE",4417,64.27],["Legal and General Assurance Society Limited",4414,51.47],["Ageas Insurance Limited",4403,54.16],["Accredited Insurance (Europe) Ltd",4337,37.64],["Marshmallow Financial Services Ltd",4208,56.77],["Coventry Building Society",4145,61.11],["Tradex Insurance Company PLC",3950,62.28],["Home Retail Group Card Services Limited",3824,34.85],["Fortegra Europe Insurance Company Ltd",3792,56.11],["St. James's Place Wealth Management Plc",3725,44.75],["Qmetric Group Limited",3696,36.8],["ANIMAL FRIENDS INSURANCE SERVICES LIMITED",3482,56.31],["Zurich Insurance Company Ltd",3407,59.79],["Pinnacle Insurance Limited",3405,38.07],["ClearBank Limited",3339,57.11],["Howserv Limited",3281,43.68],["Topaz Finance Limited",3173,37.41],["AWP Assistance UK Ltd",3144,79.7],["ManyPets Ltd",3134,71.98],["One Call Insurance Services Limited",2980,20.2],["ARAG Legal Expenses Insurance Company Limited",2976,53.26],["Allianz Insurance Plc",2908,57.25],["Zurich Assurance Ltd",2896,44.67],["Equiniti Financial Services Limited",2875,35.36],["Astrenska Insurance Limited",2862,56.1],["Telefonica Seguros y Reaseguros Compania Aseguradora S.A.U.",2771,57.37],["Interactive Investor Services Limited",2756,48.46],["People's Administration Services Limited",2731,50.02],["Tesco Underwriting Limited",2672,49.89],["CAROLE NASH INSURANCE CONSULTANTS LIMITED",2650,44.02],["Leeds Building Society",2645,67.8],["Bank of Ireland (UK) Plc",2643,39.43],["Adrian Flux Insurance Services Group",2518,21.4],["Covea Insurance plc",2497,49.27],["Yorkshire Building Society",2374,73.75],["Homeserve Membership Limited",2358,25.72],["OneSavings Bank Plc",2292,60.02],["Trading 212 UK Limited",2204,10.68],["Utility Warehouse Limited",2188,31.55],["Simplyhealth Access",2101,29.11],["AWP P&C S.A.",2042,35.85],["Financial Administration Services Limited",2028,53.13],["AmTrust Specialty Limited",1976,50.25],["OVO HOME SERVICES LTD",1953,75.59],["Coutts & Company",1845,46.72],["Acromas Insurance Company Limited",1840,49.75],["Charter Court Financial Services Limited",1834,43.87],["Liverpool Victoria Financial Services Limited",1828,66.27],["AXA Insurance Designated Activity Company",1817,56.84],["U.S. Bank Europe DAC",1747,15.25],["VANGUARD ASSET MANAGEMENT, LTD.",1644,54.41],["Sainsbury's Bank Plc",1602,49.02],["Asurion Europe Limited",1566,17.19],["Aioi Nissay Dowa Insurance UK Limited",1554,46.76],["Zempler Bank Limited",1519,42.98],["AJ Bell Securities Limited",1500,50.95],["The Mortgage Works (UK) Plc",1481,52.5],["Somerset Bridge Insurance Services Limited",1472,36.89],["Northern Bank Limited",1446,36.43],["Aldermore Bank Plc",1445,70.7],["RBS Collective Investment Funds Limited",1342,23.99],["Shawbrook Bank Limited",1280,58.66],["INSURANCE FACTORY LIMITED",1266,40.25],["Xbridge Limited",1240,39.58],["Aviva Health UK Limited",1236,27.04],["EBS Pensions Limited",1176,93.17],["MetLife Europe d.a.c.",1126,56.95],["J.P. MORGAN PERSONAL INVESTING LIMITED",1126,60.66],["Interactive Brokers (U.K.) Limited",1116,10.7],["Extracover Limited",1114,28.89],["Avantia Insurance Limited",1100,38.93],["Quilter Life & Pensions Limited",1076,68.15],["Starr International (Europe) Limited",1075,44.14],["CAF BANK LIMITED",1060,90.18],["Principality Building Society",1059,54.39],["AJ Bell Management Limited",1051,53.4],["Exeter Friendly Society Limited",1050,15.81],["True Potential Wealth Management LLP",1042,16.98],["Kensington Mortgage Company Limited",1029,29.32],["Casualty & General Insurance Company (Europe) Ltd",1027,38.59],["Paragon Bank Plc",1003,53.67],["Scottish Friendly Assurance Society Limited",985,69.95],["Arthur J. Gallagher Insurance Brokers Limited",977,61.95],["HELVETIA GLOBAL SOLUTIONS LTD",965,51.09],["I Go 4 Ltd.",958,46.83],["AMERICAN INTERNATIONAL GROUP UK LIMITED",955,53.18],["Accord Mortgages Limited",950,63.89],["QBE UK Limited",910,40.61],["Ageas Retail Limited",909,51.13],["Family Equity Plan Limited",908,40.94],["Phoenix Life CA Limited",892,59.0],["Ikano Bank AB (publ)",879,42.87],["Car Care Plan Limited",876,23.34],["ST. JAMES'S PLACE UK PLC",840,62.58],["Kroo Bank Ltd",820,29.27],["Countrywide Assured Plc",787,43.16],["M & G Securities Limited",786,48.4],["Cofunds Limited",772,51.63],["One Sure Insurance Limited",770,29.02],["ACORN INSURANCE AND FINANCIAL SERVICES LIMITED",766,47.23],["JAMES HAY ADMINISTRATION COMPANY LIMITED",764,68.31],["Aviva Protection UK Limited",760,49.86],["Embark Investment Services Limited",759,72.76],["Elderbridge Limited",758,51.09],["National House-Building Council",745,43.91],["Wesleyan Assurance Society",744,90.09],["Castelan Limited",742,45.77],["Embark Services Limited",730,91.67],["CALL ASSIST LIMITED",724,37.84],["Pepper (UK) Limited",723,42.34],["Newcastle Building Society",713,53.8],["Hood Travel Limited",711,17.2],["Cynergy Bank Plc",701,79.97],["UK Mortgage Lending Ltd",682,51.63],["HBOS Investment Fund Managers Limited",673,86.19],["ReAssure Life Limited",663,86.56],["Advisory Insurance Brokers Limited",651,65.42],["Antares Insurance Company Limited",650,51.52],["Sabre Insurance Company Limited",644,34.23],["LONDON & COUNTRY MORTGAGES LIMITED",644,63.75],["Swift 1st Limited",636,14.8],["Acm Ulr Limited",636,58.45],["USAY BUSINESS LTD",629,19.44],["OCTOPUS MONEY UNIT TRUST MANAGERS LIMITED",622,83.28],["Eversure Limited",612,11.93],["Highway Insurance Company Limited",611,47.31],["Connells Limited",608,42.6],["REASSURED LIMITED",604,41.78],["Lexham Insurance Consultants Limited",583,32.89],["Evolution Insurance Company Limited",582,26.6],["QUILTER FINANCIAL SERVICES LIMITED",580,41.94],["Complete Cover Group Ltd",560,41.92],["Rothesay Life Plc",553,24.96],["UBS AG",548,63.46],["Canada Life Limited",546,68.68],["Forester Life Limited",544,38.19],["Millennium Insurance Company Limited",542,50.45],["Halifax Share Dealing Limited",541,50.41],["FIL Life Insurance Limited",517,46.14],["Quilter Investment Platform Limited",516,69.08],["Ascent Performance Group Limited",514,30.2],["West Bay Insurance Plc",507,66.73],["ETORO (UK) LIMITED",504,3.31],["Close Brothers Limited",382,0.78],["SECURE TRUST BANK PUBLIC LIMITED COMPANY",315,34.71],["Telefonica UK Limited",314,81.88],["Vodafone Limited",252,54.94],["Carfinance247 Limited",199,34.62],["FCE Bank Plc",154,55.62]]};
+const $=i=>document.getElementById(i);
+const fmt=n=>Math.round(n).toLocaleString('en-GB');
+const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+const med=a=>{const s=[...a].sort((x,y)=>x-y),m=s.length>>1;return s.length%2?s[m]:(s[m-1]+s[m])/2};
+const bar=(p,txt)=>{const v=el('div','v'),t=el('div','t'),b=el('div','bar');b.style.width=Math.max(p,0.5)+'%';t.append(b);v.append(t,el('i','',txt));return v};
+const row=(name,node)=>{const r=el('div','r'),n=el('div','n',name);n.title=name;r.append(n,node);return r};
+[[fmt(D.m.o),'Complaints opened'],[D.m.f,'Firms in the return'],[D.m.w.toFixed(1)+'%','Uphold rate, volume-weighted'],[D.m.md.toFixed(1)+'%','Median firm uphold rate']]
+ .forEach(([v,l])=>{const k=el('div','k');k.append(el('b','',v),el('span','',l));$('kp').append(k)});
+const pm=Math.max(...D.p.map(p=>p[1]));
+D.p.forEach(p=>$('prod').append(row(p[0],bar(p[1]/pm*100,fmt(p[1])+' \u00b7 '+p[2].toFixed(1)+'% upheld'))));
+const top=D.f.slice(0,12);
+top.forEach(f=>$('firms').append(row(f[0],bar(f[1]/top[0][1]*100,fmt(f[1])+(f[2]==null?'':' \u00b7 '+f[2].toFixed(0)+'% upheld')))));
+function draw(){
+ const fl=+$('sl').value,out=$('out');$('fv').textContent=fmt(fl);out.replaceChildren();
+ const S=D.f.filter(f=>f[1]>=fl&&f[2]!=null);
+ if(S.length<5){$('cnt').textContent='Too few firms above this floor to compare.';return}
+ const m=med(S.map(f=>f[2]));
+ $('cnt').textContent=S.length+' firms above the floor \u00b7 sector median uphold rate '+m.toFixed(1)+'%';
+ const R=S.map(f=>({n:f[0],d:f[2]-m,u:f[2]})).sort((a,b)=>Math.abs(b.d)-Math.abs(a.d)).slice(0,12).sort((a,b)=>b.d-a.d);
+ const mx=Math.max(...R.map(r=>Math.abs(r.d)));
+ R.forEach(r=>{const t=el('div','dv'),b=el('div','bx');
+  b.style.cssText=(r.d>=0?'left:50%;background:var(--hi);':'right:50%;background:var(--lo);')+'width:'+Math.abs(r.d)/mx*50+'%';
+  t.append(b);const w=row(r.n,t);w.classList.add('o');
+  w.append(el('div','n',(r.d>0?'+':'')+r.d.toFixed(1)+' pp \u00b7 '+r.u.toFixed(0)+'%'));out.append(w)});
+}
+$('sl').addEventListener('input',draw);draw();
+</script>
+</body>
+</html>

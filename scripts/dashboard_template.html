@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>UK Financial Services Complaints, H2 2025</title>
+<style>
+:root{--bg:#fff;--fg:#1a1f2b;--mut:#5b6472;--card:#f4f6fa;--bd:#dde2ea;--acc:#1f3864;--hi:#c0504d;--lo:#4f81bd;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12161d;--fg:#e6e9ef;--mut:#9aa4b2;--card:#1b212b;--bd:#2c3441;--acc:#7fa3e0;--hi:#e0726f;--lo:#6fa0e0}}
+:root[data-theme="dark"]{--bg:#12161d;--fg:#e6e9ef;--mut:#9aa4b2;--card:#1b212b;--bd:#2c3441;--acc:#7fa3e0;--hi:#e0726f;--lo:#6fa0e0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+main{max-width:960px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:1.5rem;margin:0 0 4px}
+h2{font-size:1.05rem;margin:30px 0 2px}
+.cap{color:var(--mut);font-size:.85rem;margin:0 0 12px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:16px}
+.k{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:12px}
+.k b{display:block;font-size:1.4rem}
+.k span{color:var(--mut);font-size:.8rem}
+.r{display:grid;grid-template-columns:minmax(90px,36%) 1fr;gap:8px;align-items:center;margin:6px 0;font-size:.85rem}
+.r.o{grid-template-columns:minmax(90px,32%) 1fr 108px}
+.n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v{display:flex;align-items:center;gap:8px;min-width:0}
+.t{flex:1;min-width:0}
+.v i{font-style:normal;color:var(--mut);font-size:.78rem;white-space:nowrap}
+.bar{height:16px;border-radius:3px;background:var(--acc)}
+.dv{position:relative;height:16px}
+.dv::before{content:"";position:absolute;left:50%;top:-2px;bottom:-2px;width:1px;background:var(--mut)}
+.bx{position:absolute;top:0;height:100%;border-radius:2px}
+.ctl{display:flex;gap:10px;align-items:center;margin:8px 0;font-size:.85rem}
+.ctl input{flex:1;max-width:320px}
+footer{margin-top:32px;color:var(--mut);font-size:.8rem}
+a{color:var(--acc)}
+</style>
+</head>
+<body>
+<main>
+<h1>UK Financial Services Complaints</h1>
+<p class="cap">FCA firm-specific complaints data &middot; H2 2025 release</p>
+<div class="kpis" id="kp"></div>
+
+<h2>Volume and uphold rate by product group</h2>
+<p class="cap">Uphold rate is weighted by each firm's closed complaints, not a simple average across firms.</p>
+<div id="prod"></div>
+
+<h2>Largest firms by complaints opened</h2>
+<p class="cap">Label shows complaints opened and the firm's own uphold rate.</p>
+<div id="firms"></div>
+
+<h2>Uphold-rate outliers</h2>
+<p class="cap">How far each firm's uphold rate sits from the sector median. Right of the line means upheld more often than the median; the label shows the gap and the firm's own rate. A volume floor removes small firms, because a rate built on a handful of cases is mostly noise.</p>
+<div class="ctl"><label for="sl">Minimum complaints opened</label><input id="sl" type="range" min="100" max="20000" step="100" value="500"><b id="fv"></b></div>
+<p class="cap" id="cnt"></p>
+<div id="out"></div>
+
+<footer>
+Snapshot of the H2 2025 firm-specific release (published 15 May 2026); it does not update. Each firm reports its own six-month window within the half-year. Uphold rate is not a clean measure of quality: a firm with a generous goodwill policy upholds more while treating customers better.<br>
+Source: <a href="https://www.fca.org.uk/data/complaints-data/firm-level">FCA complaints data</a>. Contains public sector information licensed under the Open Government Licence v3.0.
+</footer>
+</main>
+<script>
+const D=__DATA__;
+const $=i=>document.getElementById(i);
+const fmt=n=>Math.round(n).toLocaleString('en-GB');
+const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+const med=a=>{const s=[...a].sort((x,y)=>x-y),m=s.length>>1;return s.length%2?s[m]:(s[m-1]+s[m])/2};
+const bar=(p,txt)=>{const v=el('div','v'),t=el('div','t'),b=el('div','bar');b.style.width=Math.max(p,0.5)+'%';t.append(b);v.append(t,el('i','',txt));return v};
+const row=(name,node)=>{const r=el('div','r'),n=el('div','n',name);n.title=name;r.append(n,node);return r};
+[[fmt(D.m.o),'Complaints opened'],[D.m.f,'Firms in the return'],[D.m.w.toFixed(1)+'%','Uphold rate, volume-weighted'],[D.m.md.toFixed(1)+'%','Median firm uphold rate']]
+ .forEach(([v,l])=>{const k=el('div','k');k.append(el('b','',v),el('span','',l));$('kp').append(k)});
+const pm=Math.max(...D.p.map(p=>p[1]));
+D.p.forEach(p=>$('prod').append(row(p[0],bar(p[1]/pm*100,fmt(p[1])+' \u00b7 '+p[2].toFixed(1)+'% upheld'))));
+const top=D.f.slice(0,12);
+top.forEach(f=>$('firms').append(row(f[0],bar(f[1]/top[0][1]*100,fmt(f[1])+(f[2]==null?'':' \u00b7 '+f[2].toFixed(0)+'% upheld')))));
+function draw(){
+ const fl=+$('sl').value,out=$('out');$('fv').textContent=fmt(fl);out.replaceChildren();
+ const S=D.f.filter(f=>f[1]>=fl&&f[2]!=null);
+ if(S.length<5){$('cnt').textContent='Too few firms above this floor to compare.';return}
+ const m=med(S.map(f=>f[2]));
+ $('cnt').textContent=S.length+' firms above the floor \u00b7 sector median uphold rate '+m.toFixed(1)+'%';
+ const R=S.map(f=>({n:f[0],d:f[2]-m,u:f[2]})).sort((a,b)=>Math.abs(b.d)-Math.abs(a.d)).slice(0,12).sort((a,b)=>b.d-a.d);
+ const mx=Math.max(...R.map(r=>Math.abs(r.d)));
+ R.forEach(r=>{const t=el('div','dv'),b=el('div','bx');
+  b.style.cssText=(r.d>=0?'left:50%;background:var(--hi);':'right:50%;background:var(--lo);')+'width:'+Math.abs(r.d)/mx*50+'%';
+  t.append(b);const w=row(r.n,t);w.classList.add('o');
+  w.append(el('div','n',(r.d>0?'+':'')+r.d.toFixed(1)+' pp \u00b7 '+r.u.toFixed(0)+'%'));out.append(w)});
+}
+$('sl').addEventListener('input',draw);draw();
+</script>
+</body>
+</html>

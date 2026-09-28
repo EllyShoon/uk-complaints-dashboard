@@ -1,0 +1,6 @@
+data/*.xlsx
+!data/README.md
+__pycache__/
+*.py[cod]
+.venv/
+.DS_Store
